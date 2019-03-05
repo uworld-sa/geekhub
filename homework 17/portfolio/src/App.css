@@ -13,33 +13,27 @@ header {
   left: 0px;
   width: 100%;
   z-index: 5; }
-
-header nav {
-  max-width: 1024px;
-  padding: 10px 10px;
-  margin: 0 auto; }
-
-header nav ul {
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  text-align: right; }
-
-header nav ul:hover li a {
-  color: rgba(255, 255, 255, 0.5); }
-
-header nav ul li {
-  padding-left: 20px;
-  display: inline-block; }
-
-header nav ul li a {
-  font-family: 'Staatliches', cursive;
-  text-transform: uppercase;
-  color: white;
-  text-decoration: none;
-  font-size: 20px; }
-
-header nav ul li a:hover {
-  color: white; }
+  header nav {
+    max-width: 1024px;
+    padding: 10px 10px;
+    margin: 0 auto; }
+    header nav ul {
+      margin: 0px;
+      padding: 0px;
+      width: 100%;
+      text-align: right; }
+      header nav ul:hover li a {
+        color: rgba(255, 255, 255, 0.5); }
+      header nav ul li {
+        padding-left: 20px;
+        display: inline-block; }
+        header nav ul li a {
+          font-family: 'Staatliches', cursive;
+          text-transform: uppercase;
+          color: white;
+          text-decoration: none;
+          font-size: 20px; }
+          header nav ul li a:hover {
+            color: white; }
 
 /*# sourceMappingURL=App.css.map */
