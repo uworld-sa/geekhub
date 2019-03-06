@@ -1,14 +1,34 @@
 var userName = 'uworld-sa';
 var baseUrl = 'https://api.github.com';
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js', {scope: '/'})
+        .then(function(reg) {
+            // registration worked
+            console.log('Registration succeeded. Scope is ' + reg.scope);
+        }).catch(function(error) {
+        // registration failed
+        console.log('Registration failed with ' + error);
+    });
+}
+
+function notFound() {
+    let info = document.querySelector('.info');
+    info.innerHTML = ``;
+    let h1 = document.createElement('h1');
+    h1.innerHTML = `404`;
+    info.appendChild(h1);
+    let div = document.createElement('div');
+    div.innerHTML = `Интернет отсутствует`;
+    info.appendChild(div);
+    info.style.display = "block";
+    document.querySelector('.pan-loader').style.display = "none";
+}
+
 document.addEventListener('DOMContentLoaded',function () {
 
     document.getElementById('profile').addEventListener('click',function(){
-        fetch(`${baseUrl}/users/${userName}`,
-            {
-                'headers' : {
-                    'Authorization' : "token 0f3abf692966289b8062cdb57d15f4524013a2b8"
-                }
-            })
+        fetch(`${baseUrl}/users/${userName}`)
             .then(function(response) {
                 return response.json();
             })
@@ -44,12 +64,7 @@ document.addEventListener('DOMContentLoaded',function () {
             el = ev.target.parentNode;
         }
 
-        fetch(`${baseUrl}/repos/${userName}/${el.dataset.repoName}/commits`,
-            {
-                'headers' : {
-                    'Authorization' : "token 0f3abf692966289b8062cdb57d15f4524013a2b8"
-                }
-            })
+        fetch(`${baseUrl}/repos/${userName}/${el.dataset.repoName}/commits`)
             .then(function(response) {
                 return response.json();
             })
@@ -67,19 +82,14 @@ document.addEventListener('DOMContentLoaded',function () {
                 info.style.display = "block";
                 document.querySelector('.pan-loader').style.display = "none";
             })
-            .catch( alert );
+            .catch( notFound );
     }
 
     function getRepository(){
         let info = document.querySelector('.info');
         info.style.display = "none";
         document.querySelector('.pan-loader').style.display = "block";
-        fetch(`${baseUrl}/users/${userName}/repos`,
-            {
-                'headers' : {
-                    'Authorization' : "token 0f3abf692966289b8062cdb57d15f4524013a2b8"
-                }
-            })
+        fetch(`${baseUrl}/users/${userName}/repos`)
         .then(function(response) {
             return response.json();
         })
@@ -102,15 +112,10 @@ document.addEventListener('DOMContentLoaded',function () {
             info.style.display = "block";
             document.querySelector('.pan-loader').style.display = "none";
         })
-        .catch( alert );
+        .catch( notFound );
     }
 
-    fetch(`${baseUrl}/users/${userName}`,
-        {
-            'headers' : {
-                'Authorization' : "token 0f3abf692966289b8062cdb57d15f4524013a2b8"
-            }
-        })
+    fetch(`${baseUrl}/users/${userName}`)
     .then(function(response) {
         return response.json();
     })
@@ -120,12 +125,11 @@ document.addEventListener('DOMContentLoaded',function () {
         let avatar = document.querySelector('.avatar');
         avatar.html = '';
         avatar.appendChild(picture);
-        console.log(window.location.hash);
         if (window.location.hash == '' || window.location.hash == "#profile") {
             getProfile(user);
         } else if (window.location.hash == '#repos') {
             getRepository();
         }
     })
-    .catch( alert );
+    .catch( notFound );
 });
