@@ -8,12 +8,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {
-        package: 'react-dat-gui',
-        power: 9000,
-        isAwesome: true,
-        feelsLike: '#2FA1D6',
-      },
       params: Object.assign({}, example)
     }
     this.onGuiChange = this.onGuiChange.bind(this);
@@ -21,14 +15,14 @@ class App extends Component {
 
   onGuiChange = data => {
     this.setState({
-      data
+      params:data
     });
     console.log(data);
   }
 
   render() {
     const {
-      data, params
+      params
     } = this.state;
 
     return (
@@ -36,7 +30,7 @@ class App extends Component {
         <Game params={params}></Game>
         <Gui 
           data = {
-            data
+            params
           }
           onGuiChange = {
             this.onGuiChange

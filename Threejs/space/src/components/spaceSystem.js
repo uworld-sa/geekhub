@@ -45,8 +45,8 @@ export default class spaceSystem {
             this.game[ind].precalculate = {};
             this.game[ind].geometry = new THREE.SphereGeometry(this.game[ind].radius * this.game[ind].needResize, 40, 40);
             this.game[ind].material = new THREE.MeshBasicMaterial({
-                //color: parseInt(this.game[ind].color)
-                color: 0xffff00
+                color: parseInt(this.game[ind].color)
+                //color: 0xffff00
             });
             this.game[ind].three = new THREE.Mesh(this.game[ind].geometry, this.game[ind].material);
             this.game[ind].three.position.x = this.game[ind].x;
@@ -75,8 +75,11 @@ export default class spaceSystem {
     calculateMotions() {
         for (let ind in this.game) {
             this.game[ind].three.position.x += this.game[ind].vx * this.dt;
+            this.game[ind].x += this.game[ind].vx * this.dt;
             this.game[ind].three.position.y += this.game[ind].vy * this.dt;
+            this.game[ind].y += this.game[ind].vy * this.dt;
             this.game[ind].three.position.z += this.game[ind].vz * this.dt;
+            this.game[ind].z += this.game[ind].vz * this.dt;
         }
         for (let ind in this.game) {
             let Fx = 0;

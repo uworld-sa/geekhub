@@ -22,6 +22,7 @@ export default class Gui extends Component {
 
     render() {
         const data = this.props.data;
+        console.log(data);
         return ( 
             <DatGui
                 data = {
@@ -31,9 +32,10 @@ export default class Gui extends Component {
                     this.handleUpdate
                 } 
                 >
-                <DatFolder title = 'MyAwesomeFolder' >
-                    <DatString path = 'package' label = 'Package' />
-                    <DatNumber path = 'power' label = 'Power' />
+                <DatFolder title = 'Config' >
+                    <DatNumber path = 'dt' label = 'dt' />
+                    <DatString path = 'obj[0].package' label = 'Package' />
+                    <DatNumber path = 'obj[0].power' label = 'Power' / >
                     <DatBoolean path = 'isAwesome' label = 'Awesome?' />
                     <DatColor path = 'feelsLike' label = 'Feels Like' />
                 </DatFolder> 
