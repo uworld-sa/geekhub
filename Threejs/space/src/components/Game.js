@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import OrbitControlsLib from 'three-orbit-controls'
 import throttle from 'lodash/throttle'
 import spaceSystem from './spaceSystem'
-import example from './example'
 import './Game.css'
 
 const OrbitControls = OrbitControlsLib(THREE);
@@ -13,8 +12,8 @@ export default class Game extends Component {
         super(props);
        
         this.resizeWindow = throttle(this.resizeWindow, 300);
-        this.space = {};
-        this.params = Object.assign({}, example);
+        this.space = {}
+        this.params = props.params;
     }
 
     componentDidMount() {
