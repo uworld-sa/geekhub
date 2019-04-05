@@ -5,7 +5,7 @@ import throttle from 'lodash/throttle'
 import spaceSystem from './spaceSystem'
 import './Game.css'
 import Gui from './Gui.js'
-import example from './example'
+import example from './example2'
 
 const OrbitControls = OrbitControlsLib(THREE);
 
@@ -14,6 +14,7 @@ export default class Game extends Component {
         super(props);
         let params = Object.assign({}, example);
         params.showGrid = true;
+        params.play = true;
         this.state = {
             params: Object.assign({}, params)
         }
@@ -24,6 +25,11 @@ export default class Game extends Component {
     }
 
     onGuiChange = data => {
+        if (this.state.play !== data.play) {
+            if (data.play) {
+
+            }
+        }
         this.setState({
             params:data
         });
