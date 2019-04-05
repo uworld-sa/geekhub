@@ -5,7 +5,7 @@ import throttle from 'lodash/throttle'
 import spaceSystem from './spaceSystem'
 import './Game.css'
 import Gui from './Gui.js'
-import example from './example2'
+import example from '../example/example'
 
 const OrbitControls = OrbitControlsLib(THREE);
 
@@ -26,8 +26,13 @@ export default class Game extends Component {
 
     onGuiChange = data => {
         if (this.state.play !== data.play) {
+            console.log(this.frameId);
             if (data.play) {
-
+                this.start();
+                console.log('start');
+            } else {
+                this.stop();
+                console.log('stop');
             }
         }
         this.setState({
@@ -79,7 +84,8 @@ export default class Game extends Component {
     };
 
     stop = () => {
-        cancelAnimationFrame(this.animate);
+        cancelAnimationFrame(this.frameId);
+        this.frameId = false;
     };
 
     animate = () => {

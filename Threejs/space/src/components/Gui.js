@@ -45,9 +45,9 @@ export default class Gui extends Component {
         let buttonPlay;
 
         if (params.play) {
-            buttonPlay = <dg.Button label='Stop' onClick={() => this.handleUpdate(!params.play,'play')}/>;
+            buttonPlay = <dg.Button label='Stop animation' onClick={() => this.handleUpdate(!params.play,'play')}/>;
         } else {
-            buttonPlay = <dg.Button label='Play' onClick={() => this.handleUpdate(!params.play,'play')}/>;
+            buttonPlay = <dg.Button label='Play animation' onClick={() => this.handleUpdate(!params.play,'play')}/>;
         }
         return (
             <dg.GUI expanded={false}>
@@ -94,14 +94,18 @@ export default class Gui extends Component {
                             step={1}
                             onChange={ (value) => this.handleUpdateObject(value,'needResize',i)}
                         />
-                        <dg.Color
-                            label='Color'
-                            expanded={false}
-                            red={colors[i].r}
-                            green={colors[i].g}
-                            blue={colors[i].b}
-                            onFinishChange={ (value) => this.handleUpdateObject(value,'color',i)}
-                        />
+                        {(() => {
+                            if(object.material === undefined) {
+                                return <dg.Color
+                                    label='Color'
+                                    expanded={false}
+                                    red={colors[i].r}
+                                    green={colors[i].g}
+                                    blue={colors[i].b}
+                                    onFinishChange={ (value) => this.handleUpdateObject(value,'color',i)}
+                                />
+                            }
+                        })()}
                     </dg.Folder>);
                 }
                 )}

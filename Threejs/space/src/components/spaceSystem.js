@@ -45,10 +45,14 @@ export default class spaceSystem {
             // create elements
             this.game[ind].precalculate = {};
             this.game[ind].geometry = new THREE.SphereGeometry(this.game[ind].radius * this.game[ind].needResize, 40, 40);
-            this.game[ind].material = new THREE.MeshBasicMaterial({
-                color: this.game[ind].color
-                //color: 0xffff00
-            });
+            if (this.game[ind].texture !== undefined) {
+                let texture = new THREE.TextureLoader().load( this.game[ind].texture );
+                this.game[ind].material = new THREE.MeshBasicMaterial( { map: texture }  );
+            } else {
+                this.game[ind].material = new THREE.MeshBasicMaterial({
+                    color: this.game[ind].color
+                });
+            }
             this.game[ind].three = new THREE.Mesh(this.game[ind].geometry, this.game[ind].material);
             this.game[ind].three.userData = {radius:this.game[ind].radius,needResize:this.game[ind].needResize};
             this.game[ind].three.position.x = this.game[ind].x;
@@ -68,9 +72,11 @@ export default class spaceSystem {
         }
         this.gridHelper.visible = params.showGrid;
         for (let ind in this.game) {
-            let color = new THREE.Color(params.objects[ind].color);
-            this.game[ind].color = params.objects[ind].color;
-            this.game[ind].three.material.setValues({color});
+            if (params.objects[ind].texture === undefined) {
+                let color = new THREE.Color(params.objects[ind].color);
+                this.game[ind].color = params.objects[ind].color;
+                this.game[ind].three.material.setValues({color});
+            }
             let scaleSize = params.objects[ind].radius*params.objects[ind].needResize/params.objects[ind].three.userData.radius/params.objects[ind].three.userData.needResize;
             this.game[ind].three.scale.set(scaleSize, scaleSize, scaleSize);
         }
@@ -94,11 +100,8 @@ export default class spaceSystem {
     calculateMotions() {
         for (let ind in this.game) {
             this.game[ind].three.position.x += this.game[ind].vx * this.dt;
-            this.game[ind].x += this.game[ind].vx * this.dt;
             this.game[ind].three.position.y += this.game[ind].vy * this.dt;
-            this.game[ind].y += this.game[ind].vy * this.dt;
             this.game[ind].three.position.z += this.game[ind].vz * this.dt;
-            this.game[ind].z += this.game[ind].vz * this.dt;
         }
         for (let ind in this.game) {
             let Fx = 0;
