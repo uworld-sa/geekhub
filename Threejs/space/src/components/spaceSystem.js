@@ -9,8 +9,9 @@ export default class spaceSystem {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
-        this.game = params.objects;
+        this.game = Object.assign({}, params.objects);
         this.params = params;
+        this.gridHelper = {};
     }
 
     initMiniStars() {
@@ -34,27 +35,45 @@ export default class spaceSystem {
         stars.scale.set(50, 50, 50);
         this.scene.add(stars);
 
-        var gridHelper = new THREE.GridHelper(this.grid, this.divisions);
-        this.scene.add( gridHelper );
+        this.gridHelper = new THREE.GridHelper(this.grid, this.divisions);
+        this.gridHelper.userData = {grid:this.grid,divisions:this.divisions};
+        this.scene.add( this.gridHelper );
     }
 
     initObjects() {
-        console.log(this.game);
         for (let ind in this.game) {
             // create elements
             this.game[ind].precalculate = {};
             this.game[ind].geometry = new THREE.SphereGeometry(this.game[ind].radius * this.game[ind].needResize, 40, 40);
             this.game[ind].material = new THREE.MeshBasicMaterial({
-                color: parseInt(this.game[ind].color)
+                color: this.game[ind].color
                 //color: 0xffff00
             });
             this.game[ind].three = new THREE.Mesh(this.game[ind].geometry, this.game[ind].material);
+            this.game[ind].three.userData = {radius:this.game[ind].radius,needResize:this.game[ind].needResize};
             this.game[ind].three.position.x = this.game[ind].x;
             this.game[ind].three.position.y = this.game[ind].y;
             this.game[ind].three.position.z = this.game[ind].z;
             this.scene.add(this.game[ind].three);
         }
-        console.log(this.game);
+    }
+
+    updateSpace(params) {
+        this.dt = params.dt;
+        if (this.gridHelper.userData.grid !== params.sizeArea || this.gridHelper.userData.divisions !== params.divisions) {
+            this.scene.remove(this.gridHelper);
+            this.gridHelper = new THREE.GridHelper(params.sizeArea, params.divisions);
+            this.gridHelper.userData = {grid:params.sizeArea,divisions:params.divisions};
+            this.scene.add( this.gridHelper );
+        }
+        this.gridHelper.visible = params.showGrid;
+        for (let ind in this.game) {
+            let color = new THREE.Color(params.objects[ind].color);
+            this.game[ind].color = params.objects[ind].color;
+            this.game[ind].three.material.setValues({color});
+            let scaleSize = params.objects[ind].radius*params.objects[ind].needResize/params.objects[ind].three.userData.radius/params.objects[ind].three.userData.needResize;
+            this.game[ind].three.scale.set(scaleSize, scaleSize, scaleSize);
+        }
     }
 
     calculateFx(obj, obj2) {
@@ -101,9 +120,4 @@ export default class spaceSystem {
             this.game[ind].vz += this.game[ind].precalculate.Fz * this.dt;
         }
     }
-
-    motion () {
-
-    }
-
 }
